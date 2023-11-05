@@ -13,8 +13,8 @@ class Clock extends Component{
       }
       this.handleClick = this.handleClick.bind(this);
       this.handleToggle = this.handleToggle.bind(this);
+      this.handleReset = this.handleReset.bind(this);
     }
-    intvl;
     handleToggle(event){
       if(this.state.running){
         clearInterval(this.intvl);
@@ -31,16 +31,30 @@ class Clock extends Component{
       this.setState(state => {
         console.log('pasok dine', o.target);
         console.log(this.state.spent);
-        if(o.target == "break"){
+        if(o.target === "break"){
           const bb = o.action === 'up' ? state.break + 1 : state.break - 1
-          return {session:state.session, 
-                  break:bb > 0 ? bb : 1}
+          return {
+                  ...state, 
+                  spent:0,
+                  session:state.session, 
+                  break:bb > 0 ? bb : 1
+                }
         }else{
             const ss = o.action === 'up' ? state.session + 1 : state.session - 1;
-            return {break:state.break, 
-                    session:ss > 0 ? ss : 1}
+            return {
+                    ...state,
+                    spent:0,
+                    break:state.break, 
+                    session:ss > 0 ? ss : 1
+                  }
         }
         
+      })
+    }
+    handleReset(){
+      console.log("reset");
+      this.setState(state => {
+        return {...state, running:false, spent:0}
       })
     }
     render(){
@@ -48,9 +62,9 @@ class Clock extends Component{
       let minutes = Math.floor(time/60)
       let seconds = time - minutes * 60;
       return(
-        <div className="Clock rounded">
+        <div className="Clock rounded text-center">
           <h1 className="title">25 + 5 Clock</h1>
-          <div className="control-wrap d-flex justify-content-between">
+          <div className="control-wrap d-flex justify-content-around">
             <Control 
               id="break" 
               running={this.state.running}
@@ -73,6 +87,7 @@ class Clock extends Component{
               running={this.state.running}
               // spent={this.state.spent}
               onToggle={this.handleToggle}
+              onReset={this.handleReset}
               />
           </div>
         </div>

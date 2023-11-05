@@ -12,6 +12,7 @@ class Timer extends Component{
     }
     // intvl;
     onPlay(event){
+      event.preventDefault();
       this.props.onToggle({
         target:"timer",
         running:!this.props.running
@@ -32,7 +33,9 @@ class Timer extends Component{
       // })
     }
     onReset(event){
-      
+      event.preventDefault();
+      console.log("reset on Timer");
+      this.props.onReset();
     }
   
     
@@ -54,7 +57,7 @@ class Timer extends Component{
             Play/Pause
           </button>
           <button id="reset" 
-            className="btn btn-secondary ml-3"
+            className="btn btn-secondary m-1"
             onClick={this.onReset}> 
             Reset
           </button>
