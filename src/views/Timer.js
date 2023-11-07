@@ -1,50 +1,19 @@
 import React, { Component } from 'react';
 
 class Timer extends Component{
-    constructor(props){
-      super(props);
-      // this.state = {
-      //   running:0,
-      //   play:false
-      // }
-      this.onPlay = this.onPlay.bind(this);
-      this.onReset = this.onReset.bind(this);
-    }
-    // intvl;
-    onPlay(event){
-      event.preventDefault();
-      this.props.onToggle({
-        target:"timer",
-        running:!this.props.running
-      })
-      // console.log('Dito naman')
-      // if(this.state.play){
-      //   clearInterval(this.intvl);
-      //   this.setState(state => ({...state, play:false}))
-      // }else{
-      //   this.intvl = setInterval(()=>{
-      //     this.setState(state => ({...state, running:state.running + 1, play:true}))
-      //   },1000)  
-      // }
-      // console.log("TAENA THIS")
-      // this.props.onToggle({
-      //   target:"timer",
-      //   action:"Kaliwali"
-      // })
-    }
-    onReset(event){
-      event.preventDefault();
-      console.log("reset on Timer");
-      this.props.onReset();
-    }
-  
     
     formatter(n){
       return n < 10 ? `0${n}` : `${n}`;
     }
+
     render(){
-      // console.log("TIMER", this.props.spent)
-      let display = `${this.formatter(this.props.minutes)}:${this.formatter(this.props.seconds)}`;
+      const { session, spent, onPlayPause, onReset } = this.props;
+      
+      let time = (session * 60) - spent;
+      let minutes = Math.floor(time/60)
+      let seconds = time - minutes * 60;
+      //
+      let display = `${this.formatter(minutes)}:${this.formatter(seconds)}`;
       
       return(
         <div className="Timer rounded">
@@ -53,12 +22,12 @@ class Timer extends Component{
   
           <button id="start_stop" 
             className="btn btn-secondary" 
-            onClick={this.onPlay}>
+            onClick={onPlayPause}>
             Play/Pause
           </button>
           <button id="reset" 
             className="btn btn-secondary m-1"
-            onClick={this.onReset}> 
+            onClick={onReset}> 
             Reset
           </button>
         </div>

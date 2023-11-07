@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 
 class Control extends Component{
+    static defaultProps = {
+      min:1,
+      max:60
+    }
     constructor(props){
       super(props);
       
@@ -8,10 +12,12 @@ class Control extends Component{
     }
     handleClick(event){
       event.preventDefault();
-      if(!this.props.running){
-        this.props.onClick({
-          target:this.props.id, 
-          action:event.target.id.indexOf('increment') > -1 ? 'up' : 'down'})
+
+      const { id, value, min, max, onClick } = this.props;
+      const ref = event.target.id.indexOf('increment') > -1 ? value + 1 : value - 1;
+      
+      if(ref >= min && ref <= max){
+        onClick({target:id, value:ref});
       }
     }
 
