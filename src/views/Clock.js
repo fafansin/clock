@@ -16,14 +16,14 @@ class Clock extends Component{
         spent:0
       }
 
-      this.handleClick = this.handleClick.bind(this);
+      this.handleControl = this.handleControl.bind(this);
       this.handlePlayPause = this.handlePlayPause.bind(this);
       this.handleReset = this.handleReset.bind(this);
     }
 
     handlePlayPause(event){
       event.preventDefault();
-      
+
       if(this.state.isRunning){
         clearInterval(this.intvl);
         this.setState(state => ({...state, isRunning:false}))
