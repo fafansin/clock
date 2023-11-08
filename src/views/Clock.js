@@ -10,15 +10,17 @@ class Clock extends Component{
     constructor(props){
       super(props);
       this.state = {
-        break:5,
-        session:25,
+        breaker:2,
+        session:1,
         isRunning:false,
-        spent:0
+        spent:0,
+        isSession:true
       }
 
       this.handleControl = this.handleControl.bind(this);
       this.handlePlayPause = this.handlePlayPause.bind(this);
       this.handleReset = this.handleReset.bind(this);
+      this.onToggleDisplay = this.onToggleDisplay.bind(this);
     }
 
     handlePlayPause(event){
@@ -44,6 +46,10 @@ class Clock extends Component{
       }
     }
 
+    onToggleDisplay(event){
+      this.setState(state => ({...state, isSession:!state.isSession}));
+    }
+
     handleReset(){
       this.setState(state => {
         return {...state, running:false, spent:0, session:25, breaker:5}
@@ -58,7 +64,7 @@ class Clock extends Component{
             <Control 
               id="break" 
               running={this.state.running}
-              value={this.state.break}
+              value={this.state.breaker}
               onClick={this.handleControl}
               />
             <Control 
@@ -72,11 +78,13 @@ class Clock extends Component{
             <Timer 
               spent={this.state.spent}
               session={this.state.session} 
-              break={this.state.break}
+              breaker={this.state.breaker}
+              isSession={this.state.isSession}
               onPlayPause={this.handlePlayPause}
               onReset={this.handleReset}
               />
           </div>
+          <button onClick={this.onToggleDisplay}>Toggle Display</button>
         </div>
       )
     }

@@ -7,9 +7,9 @@ class Timer extends Component{
     }
 
     render(){
-      const { session, spent, onPlayPause, onReset } = this.props;
+      const { session, breaker, spent, isSession, onPlayPause, onReset } = this.props;
       
-      let time = (session * 60) - spent;
+      let time = ((isSession ? session : breaker) * 60) - spent;
       let minutes = Math.floor(time/60)
       let seconds = time - minutes * 60;
       //
@@ -17,7 +17,7 @@ class Timer extends Component{
       
       return(
         <div className="Timer rounded">
-          <h3 id="timer-label">Session</h3>
+          <h3 id="timer-label">{isSession ? 'Session' : 'Break'}</h3>
           <h1 id="time-left">{display}</h1>
   
           <button id="start_stop" 
