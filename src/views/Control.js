@@ -28,17 +28,17 @@ class Control extends Component{
         <div className="Control rounded">
           <h3 id={`${id}-label`}>{title} Length</h3>
           <div className="btn-wrap d-flex justify-content-between align-items-center">
+            <button id={`${id}-decrement`} 
+              className="btn btn-danger"
+              onClick={this.handleClick}>
+              &#8595;
+            </button>
+            <h4 id={`${id}-length`} className="value">{value}</h4>
             <button 
               id={`${id}-increment`} 
               className="btn btn-success"
               onClick={this.handleClick}>
               &#8593;
-            </button>
-            <h4 id={`${id}-length`} className="value">{value}</h4>
-            <button id={`${id}-decrement`} 
-              className="btn btn-danger"
-              onClick={this.handleClick}>
-              &#8595;
             </button>
           </div>
         </div>

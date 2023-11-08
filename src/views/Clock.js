@@ -4,14 +4,16 @@ import Timer from './Timer';
 
 class Clock extends Component{
     static defaultProps = {
-      delay:250
+      delay:500,
+      breaker:2,
+      session:1
     }
 
     constructor(props){
       super(props);
       this.state = {
-        breaker:2,
-        session:1,
+        breaker:this.props.breaker,
+        session:this.props.session,
         isRunning:false,
         spent:0,
         isSession:true
@@ -20,7 +22,8 @@ class Clock extends Component{
       this.handleControl = this.handleControl.bind(this);
       this.handlePlayPause = this.handlePlayPause.bind(this);
       this.handleReset = this.handleReset.bind(this);
-      this.onToggleDisplay = this.onToggleDisplay.bind(this);
+      this.onAlarm = this.onAlarm.bind(this);
+      this.onTick = this.onTick.bind(this);
     }
 
     handlePlayPause(event){
@@ -30,10 +33,13 @@ class Clock extends Component{
         clearInterval(this.intvl);
         this.setState(state => ({...state, isRunning:false}))
       }else{
-        this.intvl = setInterval(()=>{
-          this.setState(state => ({...state, spent:state.spent + 1, isRunning:true}))
-        },this.props.delay)  
+        this.intvl = setInterval(this.onTick,this.props.delay)  
       }
+    }
+
+    onTick(){
+
+      this.setState(state => ({...state, spent:state.spent + 1, isRunning:true}))
     }
 
     handleControl(o){
@@ -46,15 +52,21 @@ class Clock extends Component{
       }
     }
 
-    onToggleDisplay(event){
+    onAlarm(event){
       this.setState(state => ({...state, isSession:!state.isSession}));
     }
 
     handleReset(){
-      this.setState(state => {
-        return {...state, running:false, spent:0, session:25, breaker:5}
-      })
+      console.log("nandito na ka na")
+      clearInterval(this.intvl)
+      this.setState(state => ({...state, 
+        isRunning:false, 
+        spent:0, 
+        session:this.props.session, 
+        breaker:this.props.breaker, 
+        isSession:true}))
     }
+    
     render(){
       
       return(
@@ -84,7 +96,7 @@ class Clock extends Component{
               onReset={this.handleReset}
               />
           </div>
-          <button onClick={this.onToggleDisplay}>Toggle Display</button>
+          <button onClick={this.onAlarm}>Toggle Display</button>
         </div>
       )
     }
