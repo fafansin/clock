@@ -4,7 +4,7 @@ import Timer from './Timer';
 
 class Clock extends Component{
     static defaultProps = {
-      delay:500,
+      delay:700,
       breaker:2,
       session:1
     }
@@ -38,8 +38,20 @@ class Clock extends Component{
     }
 
     onTick(){
-
-      this.setState(state => ({...state, spent:state.spent + 1, isRunning:true}))
+      if(this.state.isSession){
+        if(this.state.spent === this.state.session*60){
+          this.onAlarm();
+        }else{
+          console.log("Kee on Ticking")
+          this.setState(state => ({...state, spent:state.spent + 1, isRunning:true}))
+        }
+      }else{
+        if(this.state.spent === this.state.breaker*60){
+          this.onAlarm();
+        }else{
+          this.setState(state => ({...state, spent:state.spent + 1, isRunning:true}))
+        }
+      }
     }
 
     handleControl(o){
@@ -52,8 +64,11 @@ class Clock extends Component{
       }
     }
 
-    onAlarm(event){
-      this.setState(state => ({...state, isSession:!state.isSession}));
+    onAlarm(){
+      clearInterval(this.intvl);
+      console.log("SOUND THE ALARM", this.state)
+      this.setState(state => ({...state, isSession:!state.isSession, spent:0}));
+      this.intvl = setInterval(this.onTick,this.props.delay)
     }
 
     handleReset(){
@@ -66,7 +81,7 @@ class Clock extends Component{
         breaker:this.props.breaker, 
         isSession:true}))
     }
-    
+
     render(){
       
       return(
