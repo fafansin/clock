@@ -54,6 +54,11 @@ class Clock extends Component{
       }
     }
 
+    onBeep(){
+      console.log('Tae ka!')
+      document.getElementById('beep').play()
+    }
+
     handleControl(o){
       if(!this.state.isRunning){
         if(o.target === 'session'){
@@ -67,6 +72,7 @@ class Clock extends Component{
     onAlarm(){
       clearInterval(this.intvl);
       console.log("SOUND THE ALARM", this.state)
+      document.getElementById('beep').play()
       this.setState(state => ({...state, isSession:!state.isSession, spent:0}));
       this.intvl = setInterval(this.onTick,this.props.delay)
     }
@@ -111,7 +117,8 @@ class Clock extends Component{
               onReset={this.handleReset}
               />
           </div>
-          <button onClick={this.onAlarm}>Toggle Display</button>
+          <audio id="beep" preload="auto" src="https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav"></audio>
+          <button onClick={this.onBeep}>Beep ME</button>
         </div>
       )
     }
