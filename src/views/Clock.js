@@ -4,9 +4,9 @@ import Timer from './Timer';
 
 class Clock extends Component{
     static defaultProps = {
-      delay:700,
-      breaker:2,
-      session:1
+      delay:1000,
+      breaker:25,
+      session:5
     }
 
     constructor(props){
@@ -42,7 +42,6 @@ class Clock extends Component{
         if(this.state.spent === this.state.session*60){
           this.onAlarm();
         }else{
-          console.log("Kee on Ticking")
           this.setState(state => ({...state, spent:state.spent + 1, isRunning:true}))
         }
       }else{
@@ -55,7 +54,6 @@ class Clock extends Component{
     }
 
     onBeep(){
-      console.log('Tae ka!')
       document.getElementById('beep').play()
     }
 
@@ -71,15 +69,22 @@ class Clock extends Component{
 
     onAlarm(){
       clearInterval(this.intvl);
-      console.log("SOUND THE ALARM", this.state)
-      document.getElementById('beep').play()
+      
+      document.getElementById('beep').play();
       this.setState(state => ({...state, isSession:!state.isSession, spent:0}));
-      this.intvl = setInterval(this.onTick,this.props.delay)
+      
+      this.intvl = setInterval(this.onTick, this.props.delay);
+      
+
     }
 
     handleReset(){
-      console.log("nandito na ka na")
-      clearInterval(this.intvl)
+      clearInterval(this.intvl);
+
+      let beeper = document.getElementById('beep');
+      beeper.pause();
+      beeper.currentTime = 0;
+
       this.setState(state => ({...state, 
         isRunning:false, 
         spent:0, 
@@ -118,7 +123,6 @@ class Clock extends Component{
               />
           </div>
           <audio id="beep" preload="auto" src="https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav"></audio>
-          <button onClick={this.onBeep}>Beep ME</button>
         </div>
       )
     }
